@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 # class-based views
 from django.views import View
+from django.views.generic.base import RedirectView, TemplateView
 # decorator to enforce authentication before loading view
 from django.contrib.auth.decorators import login_required
 # djson serialization
@@ -20,21 +21,24 @@ from .utilities import Itemization, Shippinglabel, Email
 # Cemex Views:
 
 
-def index(request):
+class IndexView(RedirectView):
 	# currently, we just want to send the user either
 	# to the login page, or their profile/orders page
 	# if they're already logged in. No home page. 
-	
-	if request.user.is_authenticated == True:
-		return redirect('cemex:my_orders')
-	else:
-		return redirect('profiles:login')
+	permanent = False
 
-	# dictionary to pass to template
-	output = {}
+	def route(self, request):
+		# custom redirection logic
+		if self.request.user.is_authenticated == True:
+			self.pattern_name = 'cemex:my_orders'
+		else:
+			self.pattern_name = 'profiles:login'
+		return
 
-	# return a render. pass the request, template, and output dictionary
-	return render(request, 'cemex/index.html', output )
+	def get_redirect_url(self, *args, **kwargs):
+		# override this function to call our custom function
+		self.route(self.request)
+		return super().get_redirect_url(*args, **kwargs)
 
 
 @login_required	
@@ -291,59 +295,54 @@ def place_order(request):
 	return redirect('cemex:my_orders')
 
 
-@login_required	
-def my_orders(request):
+class MyOrdersView(TemplateView):
+	template_name = 'cemex/my_orders.html'
 
-	# start a dict to store template data
-	output = {}
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context['orders'] = Order.objects.all().filter(
+														user=self.request.user,
+														complete = True
+														).order_by('-datetime')[0:25]
 
-	# Collect newest 25 completed user orders
-	orders = Order.objects.all().filter(user=request.user, complete = True).order_by('-datetime')[0:25]
-	ordercount = orders.count()
-
-	# pack output dict for sending to template:
-	output['orders'] = orders
-	output['ordercount'] = ordercount
-
-	return render(request, 'cemex/my_orders.html', output )
+		context['ordercount'] = context['orders'].count()
+		return context
 
 
-@login_required	
-def review_order(request, order_id):
+class ReviewOrderView(TemplateView):
+	template_name = 'cemex/review_order.html'
 
-	# start a dict to store template data
-	output = {}
-
-	# get order
-	order = Order.objects.get(id=order_id, user=request.user)
-
-	# get all items in order
-	order_items = Order_Item.objects.all().filter(order=order)
-
-	
-	# list to store item itemizations
-	itemizations = []
-	
-	for order_item in order_items:
-	
-		itemization = Itemization(item=order_item.item,
-								  quantity=order_item.quantity,
-								  order_item = order_item
-								  )
-
-		order_item_details = Order_Item_Detail.objects.all().filter(order_item=order_item)
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
 		
-		for order_item_detail in order_item_details:
-			
-			itemization.add_property(attribute=order_item_detail.attribute,
-								     option=order_item_detail.option
-								     )
+		# get order
+		order = Order.objects.get(id=self.kwargs['order_id'], user=self.request.user)
 
-			
-		itemizations.append(itemization)
-	
-	# pack output dict for sending to template:
-	output['itemizations'] = itemizations
-	output['order'] = order
+		# get all items in order
+		order_items = Order_Item.objects.all().filter(order=order)
 
-	return render(request, 'cemex/review_order.html', output )
+		# list to store item itemizations
+		itemizations = []
+		
+		for order_item in order_items:
+		
+			itemization = Itemization(item=order_item.item,
+									  quantity=order_item.quantity,
+									  order_item = order_item
+									  )
+
+			order_item_details = Order_Item_Detail.objects.all().filter(order_item=order_item)
+			
+			for order_item_detail in order_item_details:
+				
+				itemization.add_property(attribute=order_item_detail.attribute,
+									     option=order_item_detail.option
+									     )
+
+				
+			itemizations.append(itemization) 
+
+			context['itemizations'] = itemizations
+			context['order'] = order
+
+		return context

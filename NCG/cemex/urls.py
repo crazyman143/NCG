@@ -15,12 +15,15 @@ Including another URLconf
 """
 from django.urls import path, include
 from . import views
+from .views import IndexView, MyOrdersView, ReviewOrderView
+from django.contrib.auth.decorators import login_required
+
 
 app_name = 'cemex'
 
 urlpatterns = [
     # index (currently redirects to login or my orders)
-    path('', views.index, name='index'),
+    path('', IndexView.as_view(), name='index'),
     # new order (lists items in order forms)
 	path('new_order', views.new_order, name='new_order'),
     # confirm order (review/delete items in incomplete order)
@@ -28,9 +31,9 @@ urlpatterns = [
     # place order (marks incomplete order as complete, sends itemizations email)
 	path('place_order/', views.place_order, name='place_order'),
     # my orders (shows orders user has placed)
-	path('my_orders', views.my_orders, name='my_orders'),
+	path('my_orders', login_required(MyOrdersView.as_view()), name='my_orders'),
     # links on my orders view takes user here. itemizated view of a submitted order.
-    path('review_order/<order_id>/', views.review_order, name='review_order'),
+    path('review_order/<order_id>/', login_required(ReviewOrderView.as_view()), name='review_order'),
     # accepts an order uuid and marks the order shipped/processed for user's knowledge (INCOMPLETE)
     #path('process_order/<order_uuid>/', views.process_order, name='review_order'),
 	
