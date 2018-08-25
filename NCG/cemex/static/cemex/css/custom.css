@@ -1,0 +1,105 @@
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  line-height: 60px; /* Vertically center the text there */
+  background-color: #f5f5f5;
+}
+
+
+/* Custom page CSS
+-------------------------------------------------- */
+
+
+
+/* hide the asterisk on form required fields because it's ugly*/
+.asteriskField {
+    display: none;
+}
+
+
+/* used on order page to allow button to be inline with text */
+.my-inline {
+    display: inline;
+}
+
+/* hidden success message for adding item on order page */
+.success_msg {
+    color: limegreen;
+    font-weight: bold;
+    display: none;
+}
+
+
+/* fix for review order button on order page */
+.marginfix{
+margin-right:10% !important;  
+margin-left:10% !important;  
+}
+
+/* images confirm order page */
+.shrunk-pic {
+	max-width: 40%;
+}
+
+/* images on new order page */
+.thumb-pic {
+	max-width: 150px;
+	max-height: 150px;
+}
+
+
+/* fix for elements crowding buttons */
+.btn {
+    margin-top: 5px; 
+}
+
+.form-slim {
+    min-width: 5px;
+    width: auto;
+    display: inline;
+}
+
+.spacer-row {
+	height: 3vh; /* 2% of viewport height*/
+}
+
+.spacer-row6 {
+	height: 6vh; /* 6% of viewport height*/
+}
+
+
+/* set margins for fixed header */
+body {
+  min-height: 75rem;
+  padding-top: 5rem;
+}
+
+body > .container {
+  padding: 60px 15px 0;
+}
+
+.footer > .container {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+code {
+  font-size: 80%;
+}
+
+ .navbar {
+  min-height: 80px;
+}

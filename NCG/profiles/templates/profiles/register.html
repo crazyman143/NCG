@@ -1,0 +1,42 @@
+{% extends "header.html" %}
+
+{% block title %}
+Registration
+{% endblock%}
+
+{% block head %}
+
+{# make static folder available for use #}
+{% load staticfiles %}
+
+
+{% endblock %}
+
+
+
+{% block body %}
+
+{% load crispy_forms_tags %}
+
+<!-- prefs heading row -->
+<div class="row">
+	<div class="col col-md-6 offset-md-3 text-left">
+		<h3>Account Registration</h3>
+		<p>To register your new account, please fill out the following fields:</p>
+		<hr />
+		
+		
+		<form method="post" action="">
+			{% csrf_token %}
+			{{ user_form | crispy }}
+			{% crispy profile_form %}
+		</form>
+		
+		
+	</div>
+</div>
+
+<!-- empty spacer row -->
+<div class="row spacer-row"></div>
+
+{% endblock %}

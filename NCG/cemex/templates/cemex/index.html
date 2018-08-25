@@ -1,0 +1,44 @@
+{% extends "header.html" %}
+
+{% block title %}
+Welcome
+{% endblock%}
+
+{% block head %}
+
+{# make static folder available for use #}
+{% load staticfiles %}
+
+
+{% endblock %}
+
+
+
+{% block body %}
+
+
+<!-- prefs heading row -->
+<div class="row">
+	<div class="col">
+		<h3>Cemex <small>| Order Portal</small></h3>
+		<p>Welcome to the Cemex supply order portal. Please make a selection below to begin.</p>
+		<hr />
+
+		
+		
+	</div>
+</div>
+
+
+<div class="row">
+	<div class="col col-md-6 offset-md-3 text-left">
+		<a class="btn btn-primary btn-lg float-left role="button" href="{%url 'cemex:submit_order' %}">Login</a>
+		<a class="btn btn-secondary btn-lg float-right role="button"" href="{%url 'cemex:submit_order' %}">Signup</a>
+
+	</div>
+</div>
+
+<!-- empty spacer row -->
+<div class="row spacer-row"></div>
+
+{% endblock %}

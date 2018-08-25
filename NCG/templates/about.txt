@@ -1,0 +1,2 @@
+this folder contains templates global to the project. accessible and extendable from all apps. 
+explicitly specified this directory in 'DIRS' in main settings file.

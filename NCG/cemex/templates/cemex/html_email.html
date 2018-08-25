@@ -1,0 +1,65 @@
+
+<html>
+	<head>
+	</head>
+
+	<body>
+
+		<div>
+			<h1>New Cemex Order</h1>
+			<p>The details of this order are listed below.</p>
+		</div>
+		<hr />
+
+
+
+		<table cellpadding="10">
+			<tr>
+				<td><b>Placed:</b></td> 
+				<td>{{first_name}} {{last_name}}</td>
+			</tr>
+			<tr>
+				<td><b>Date:</b></td>
+				<td>{{date}}</td>
+			</tr>
+			<tr>
+				<td><b>Time:</b></td>
+				<td>{{time}}</td>	
+			</tr>
+		</table>
+
+
+	<table cellpadding="10">
+		{% for itemization in itemizations %}
+			 <tr>
+				<td>
+					<b>{{itemization.item.name}}</b>
+				</td>
+			</tr>
+
+			{% for property, option in itemization.properties.items %}
+
+			<tr>
+				<td>{{property}}:</td>
+				<td>{{option}}</td>
+			</tr>
+			
+			{% endfor %}
+
+			<tr>
+				<td>
+					Quantity:
+				</td>
+				<td>
+					{{itemization.quantity}}
+				</td>
+			</tr>
+
+
+			<tr><td colspan="2"><hr /></td></tr>
+
+		{% endfor %}
+	</table>
+
+	</body>
+</html>

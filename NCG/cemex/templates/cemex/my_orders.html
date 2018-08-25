@@ -1,0 +1,68 @@
+{% extends "header.html" %}
+
+{% block title %}
+My Orders
+{% endblock%}
+
+{% block head %}
+
+{# make static folder available for use #}
+{% load staticfiles %}
+
+
+{% endblock %}
+
+
+
+{% block body %}
+
+
+<div class="row">
+	<div class="col">
+		<h3>My Orders</h3>
+		<p>Your recent orders are listed below.</p>
+		<p><a class="btn btn-success float-left role="button" href="{%url 'cemex:new_order' %}"><i class="fas fa-plus-circle"></i> New Order</a></p>
+	</div>
+</div>
+</br>
+	{% if ordercount > 0 %}
+
+	<table class="table table-striped">
+
+	  <thead>
+	    <tr>
+	      <th scope="col">Order ID</th>
+	      <th scope="col">Placed On</th>
+	      <th scope="col" class="text-right">More Details</th>
+	    </tr>
+	  </thead>
+
+		{% for order in orders %}
+			 <tr>
+				<td>
+					{{order.id}}
+				</td>
+				<td>
+					<strong>{{order.datetime.date}}</strong>  {{order.datetime.time}}
+				</td>
+				<td>
+					<p><a class="btn btn-secondary btn-sm float-right role="button" href="{%url 'cemex:review_order' order.id %}"><i class="fas fa-search"></i></a></p>
+				</td>
+			 </tr>
+		{% endfor %}
+	</table>
+
+	{% else %}
+		<div class="col text-center">
+			</br></br></br>
+			<p> You haven't placed any orders yet.</p>
+			<p>Place an order now: <a href="{%url 'cemex:new_order' %}">New Order</a>.</p>
+			</br></br></br>
+		</div>
+	{% endif %}
+
+
+<!-- empty spacer row -->
+<div class="row spacer-row"></div>
+
+{% endblock %}

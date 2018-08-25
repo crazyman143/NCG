@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		{# make static folder available for use here #}
+		{% load staticfiles %}
+
+		<!-- load Bootstrap4 -->
+		<link rel='stylesheet' href=" {% static '/cemex/css/bootstrap.min.css' %} " type='text/css'/>
+		
+		<script src="{% static '/cemex/js/jquery.min.js' %}"></script>
+		<script src="{% static '/cemex/js/fontawesome.js' %}"></script>
+		<script src="{% static '/cemex/js/bootstrap.min.js' %}"></script>
+
+		<link rel='stylesheet' href=" {% static '/cemex/css/custom.css' %} " type='text/css'/>
+
+		<title>Cemex Portal {{ title }}</title>
+	
+		{# block is filled when we extend this page #}
+		{% block head %}
+		{% endblock %}
+		
+
+		
+		
+	</head>
+
+	<body>
+
+		<!-- Navigation bar -->
+		<!-- <nav class="navbar navbar-light bg-light navbar-expand-md fixed-top"> -->
+		<nav class="navbar navbar-dark bg-dark navbar-expand-md fixed-top">
+		
+		  <div class="container">
+		  <a class="navbar-brand" href="{%url 'cemex:index' %}"><img src="{% static '/cemex/img/cemex.png' %}" height="100%" class="d-inline-block align-middle" alt=""></a>
+			<a class="navbar-brand" href="/cemex">
+			  <h6 class="d-inline-block align-bottom"> </small></h6>
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+			  <span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarResponsive">
+			  <ul class="navbar-nav ml-auto">
+
+				
+				<!-- login link uses next parameter to grab the current url and pass it along.  -->
+				<!-- after authentication at the login template, we are passed back to previous page  -->
+				{% if user.is_authenticated == True %}
+					<li class="nav-item"><a class="nav-link active" href="{% url 'profiles:logout' %}"><i class="fas fa-sign-out-alt"></i>{{user.profile.first_name}} (Logout)</a></li>
+					<li class="nav-item"><a class="nav-link active" href="{%url 'profiles:edit' %}"><i class="fas fa-user"></i> Profile</a></li>
+					<li class="nav-item"><a class="nav-link active" href="{% url 'cemex:my_orders' %}"><i class="fas fa-list-alt"></i></i> My Orders</a></li>
+					<li class="nav-item"> <a class="nav-link active" href="{%url 'cemex:new_order' %}"><i class="fas fa-plus-circle"></i> New Order</a></li>
+				{% else %}
+					<li class="nav-item"><a class="nav-link active" href="{% url 'profiles:login' %}"><i class="fas fa-key"></i> Login</a></li>
+					<li class="nav-item"><a class="nav-link active" href="{%url 'profiles:register' %}"><i class="fas fa-user-plus"></i> Register</a></li>
+				{% endif %}
+	  
+			  </ul>
+		  </div>
+		</nav>
+		
+		<!-- begin container -->
+		<div class="container">
+		
+		<!-- empty spacer row -->
+		<div class="row spacer-row"></div>
+		
+			{% if messages %}
+			    {% for message in messages %}
+
+			    <div class="alert alert-dismissible  alert-{{ message.tags }}"  role="alert">
+			    	<button class="close" data-dismiss="alert">
+			    		<i class="fas fa-times-circle"></i>
+			    	</button>
+			    	{{ message | safe }}
+			    </div>
+
+			    {% endfor %}
+			{% endif %}
+
+	
+		{# block is filled when we extend this page #}
+		{% block body %}
+		{% endblock %}
+
+		<!-- End container -->  
+		</div>
+
+	
+	<footer class="footer bg-dark">
+      <div class="container">
+		<div class="row">
+			<div class="col-sm-12">
+				<span class="text-muted">Cemex Order Portal</span>
+			</div>
+		</div>
+      </div>
+    </footer>
+
+		
+	</body> 
+</html>
+
+
+

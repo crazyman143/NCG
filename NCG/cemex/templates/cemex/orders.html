@@ -1,0 +1,48 @@
+{% extends "header.html" %}
+
+{% block title %}
+Orders
+{% endblock%}
+
+{% block head %}
+
+{# make static folder available for use #}
+{% load staticfiles %}
+
+
+{% endblock %}
+
+
+
+{% block body %}
+
+
+
+<!-- prefs heading row -->
+<div class="row">
+	<div class="col">
+		<h3>My Orders</h3>
+		<p>View orders that you've placed.</p>
+		<hr />
+		
+
+		{% for item in items %}
+			<p>{{item.name}}</p>
+			{% for attrib in item.get_attributes %}
+				<p>{{attrib.name}}</p>
+				{% for opt  in attrib.get_options %}
+					<p>{{opt.name}}</p>
+				{% endfor %}
+			{% endfor %}
+		{% endfor %}
+
+
+		
+		
+	</div>
+</div>
+
+<!-- empty spacer row -->
+<div class="row spacer-row"></div>
+
+{% endblock %}

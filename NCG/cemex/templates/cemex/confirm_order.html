@@ -1,0 +1,115 @@
+{% extends "header.html" %}
+
+{% block title %}
+Confirm Order
+{% endblock%}
+
+{% block head %}
+
+{# make static folder available for use #}
+{% load staticfiles %}
+
+
+{% endblock %}
+
+
+
+{% block body %}
+
+
+
+<!-- prefs heading row -->
+<div class="row">
+	<div class="col">
+		<h3>Cemex Order Confirmation</h3>
+		<p>Please confirm that everything in your order looks correct. </p>
+	</div>
+</div>
+<hr />
+
+<div class="row">
+	<div class="col">
+		<p>The following shipping information will be sent with your order:</p>
+		<p>{{shippinglabel | safe}}</p>
+		<p><h6>{{current_order.datetime}}</h6></p>
+		<h5>Items in your order:</h5>
+	</div>
+	
+</div>
+
+
+<div class="row">
+
+	{% if itemcount > 0 %}
+
+	<table class="table">
+		{% for itemization in itemizations %}
+			 <tr>
+				<td>
+					<div class="row">
+						{% if itemization.item.image%}
+						<div class=" text-left">
+							<img src="/media/{{itemization.item.image}}" class="img-fluid img-thumbnail thumb-pic">
+						</div>
+						{% endif %}
+						<div class="col">
+							<h5><b>{{itemization.item.name}}</b></h5>
+							<h6><b>Quantity:</b> {{itemization.quantity}}</h6>
+						</div>
+					</div>
+				</td>
+				<td>
+					{% for property, option in itemization.properties.items %}
+						<h6><b>{{property}}:</b> {{option}}</h6>
+					{% endfor %}
+				</td>
+				<td>
+
+					<form>
+						{% csrf_token %}
+						{{itemization.del_form}}
+						<button type="submit" name="submit" class="btn btn-danger del_item_js_tag btn-sm"><i class="fas fa-trash"></i></button>
+					</form>
+
+
+				</td>
+			 </tr>
+		{% endfor %}
+	</table>
+
+	<nav class="navbar fixed-bottom navbar-light bg-light justify-content-between">
+		<div class="col text-left marginfix">
+			<div>Add more items?</div>
+			<a class="btn btn-success float-left role="button" href="{%url 'cemex:new_order' %}">Go Back</a>
+		</div>
+		<div class="col text-right marginfix">
+			<div>Confirm and place order:</div>
+			<a class="btn btn-primary float-right role="button" href="{% url 'cemex:place_order' %}">Place Order</a>
+		</div>
+	</nav>
+
+
+	{% else %}
+		<div class="col text-center">
+			</br></br></br>
+			<p> You don't have any items in your order cart.</p>
+			<p><a class="btn btn-success role="button" href="{%url 'cemex:new_order' %}"><i class="fas fa-plus-circle"></i> New Order</a></p>
+			</br></br></br>
+		</div>
+	{% endif %}
+
+</div>
+
+<hr />
+
+
+
+
+
+
+<!-- empty spacer row -->
+<div class="row spacer-row"></div>
+
+<script src=" {% static '/cemex/js/js_confirm_order.js' %} "></script>
+
+{% endblock %}

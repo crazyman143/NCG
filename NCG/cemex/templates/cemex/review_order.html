@@ -1,0 +1,86 @@
+{% extends "header.html" %}
+
+{% block title %}
+Review Order
+{% endblock%}
+
+{% block head %}
+
+{# make static folder available for use #}
+{% load staticfiles %}
+
+
+{% endblock %}
+
+
+
+{% block body %}
+
+
+<!-- prefs heading row -->
+<div class="row">
+	<div class="col">
+		<h3>Review Order</h3>
+		<p>The details if this order are listed below.</p>
+	</div>
+</div>
+<hr />
+
+<div class="row">
+	<div class="col"> 
+		<table cellpadding="5">
+			<tr>
+				<td>Placed:</td> 
+				<td>{{order.user.profile.first_name}} {{order.user.profile.last_name}}</td>
+			</tr>
+			<tr>
+				<td>Date:</td>
+				<td>{{order.datetime.date}}</td>
+			</tr>
+			<tr>
+				<td>Time:</td>
+				<td>{{order.datetime.time}}</td>	
+			</tr>
+		</table>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col">
+		<table class="table">
+			{% for itemization in itemizations %}
+				 <tr>
+					<td>
+						<div class="row">
+							<div class=" text-left">
+								<img src="/media/{{itemization.item.image}}" class="img-fluid img-thumbnail thumb-pic">
+							</div>
+							<div class="col">
+								<h5><b>{{itemization.item.name}}</b></h5>
+								<h6><b>Quantity:</b> {{itemization.quantity}}</h6>
+							</div>
+						</div>
+					</td>
+					<td>
+						{% for property, option in itemization.properties.items %}
+							<h6><b>{{property}}:</b> {{option}}</h6>
+						{% endfor %}
+					</td>
+				 </tr>
+			{% endfor %}
+		</table>
+	</div>
+</div>
+
+<hr />
+
+<div class="row">
+	<div class="col text-left">
+		<p><a class="btn btn-success float-left role="button" href="{%url 'cemex:my_orders' %}">Go Back</a></p>
+	</div>
+</div>
+
+<!-- empty spacer row -->
+<div class="row spacer-row"></div>
+
+{% endblock %}
