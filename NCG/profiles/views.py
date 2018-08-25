@@ -25,9 +25,55 @@ from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 
+# import default authentication views
+from django.contrib.auth.views import (
+    LoginView,
+    LogoutView,
+    PasswordResetView,
+    PasswordResetDoneView,
+    PasswordChangeView,
+    PasswordChangeDoneView,
+    PasswordResetConfirmView,
+    PasswordResetCompleteView
+    )
+
+# need this to override reverse_url in extended class
+from django.urls import reverse_lazy
 
 # Create your views here.
 
+
+class LoginView(LoginView):
+	template_name = 'profiles/login.html'
+
+
+
+class LogoutView(LoginView):
+	pass
+
+class PasswordChangeView(PasswordChangeView):
+	template_name = 'profiles/password_change_form.html'
+	# have to override this because we need namespace included
+	success_url = reverse_lazy('profiles:password_change_done')
+
+
+def password_change_done(request):
+		message = '<strong>Success:</strong> Password Changed.'
+		messages.add_message(request, messages.SUCCESS, message)
+		return redirect('profiles:change_password')
+
+
+class PasswordResetView(PasswordResetView):
+	email_template_name = 'profiles/password_reset_email.html'
+	subject_template_name = 'profiles/password_reset_subject.txt'
+	template_name = 'profiles/password_reset_form.html'
+	success_url = reverse_lazy('profiles:password_reset_done')
+
+
+def password_reset_done(request):
+		message = '<strong>Success:</strong> Please check for an email with further instructions.'
+		messages.add_message(request, messages.SUCCESS, message)
+		return redirect('profiles:password_reset')
 
 
 def index(request):
