@@ -28,7 +28,7 @@ Registration
 		
 		<form method="post" action="">
 			{% csrf_token %}
-			{{ user_form | crispy }}
+			{% crispy user_form %}
 			{% crispy profile_form %}
 		</form>
 		

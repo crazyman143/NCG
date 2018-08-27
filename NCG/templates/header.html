@@ -48,7 +48,7 @@
 				<!-- login link uses next parameter to grab the current url and pass it along.  -->
 				<!-- after authentication at the login template, we are passed back to previous page  -->
 				{% if user.is_authenticated == True %}
-					<li class="nav-item"><a class="nav-link active" href="{% url 'profiles:logout' %}"><i class="fas fa-sign-out-alt"></i>{{user.profile.first_name}} (Logout)</a></li>
+					<li class="nav-item"><a class="nav-link active" href="{% url 'profiles:logout' %}"><i class="fas fa-sign-out-alt"></i>{{user.first_name}} (Logout)</a></li>
 					<li class="nav-item"><a class="nav-link active" href="{%url 'profiles:edit' %}"><i class="fas fa-user"></i> Profile</a></li>
 					<li class="nav-item"><a class="nav-link active" href="{% url 'cemex:my_orders' %}"><i class="fas fa-list-alt"></i></i> My Orders</a></li>
 					<li class="nav-item"> <a class="nav-link active" href="{%url 'cemex:new_order' %}"><i class="fas fa-plus-circle"></i> New Order</a></li>

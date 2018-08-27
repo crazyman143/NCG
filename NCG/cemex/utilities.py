@@ -56,14 +56,14 @@ class Shippinglabel:
 		else:
 			linebreak = '<br />'
 		
-		self.label = user.profile.first_name + ' ' + user.profile.last_name + linebreak
+		self.label = user.first_name + ' ' + user.last_name + linebreak
 		self.label += user.profile.address1 + linebreak
 		self.label += user.profile.address2 + linebreak
 		self.label += user.profile.city + linebreak
 		self.label += user.profile.state + linebreak
 		self.label += user.profile.zip + linebreak
 		self.label += user.profile.phone + linebreak
-		self.label += user.profile.email + linebreak
+		self.label += user.email + linebreak
 		# fix any duplicate line breaks
 		self.label = self.label.replace(linebreak + linebreak, linebreak)
 		
@@ -78,8 +78,8 @@ class Email:
 		self.subject = 'You have a new CEMEX order'
 		
 		output = {
-					'first_name' : order.user.profile.first_name,
-					'last_name': order.user.profile.last_name,
+					'first_name' : order.user.first_name,
+					'last_name': order.user.last_name,
 					'date': order.datetime.date,
 					'time' : order.datetime.time,
 					'itemizations' : itemizations

@@ -11,7 +11,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 
 # import my forms
-from .forms import UserRegistrationForm, UserProfileForm
+from .forms import UserRegistrationForm, UserProfileForm, UserUpdateForm
 
 # built-in messaging framework
 from django.contrib import messages
@@ -48,7 +48,7 @@ class LoginView(LoginView):
 
 
 
-class LogoutView(LoginView):
+class LogoutView(LogoutView):
 	pass
 
 class PasswordChangeView(PasswordChangeView):
@@ -71,9 +71,20 @@ class PasswordResetView(PasswordResetView):
 
 
 def password_reset_done(request):
-		message = '<strong>Success:</strong> Please check for an email with further instructions.'
+		message = '<strong>Success:</strong> Please check email for further instructions.'
 		messages.add_message(request, messages.SUCCESS, message)
 		return redirect('profiles:password_reset')
+
+
+class PasswordResetConfirmView(PasswordResetConfirmView):
+		success_url = reverse_lazy('profiles:password_reset_complete')
+		template_name = 'profiles/password_reset_confirm.html'
+
+
+def password_reset_complete(request):
+		message = '<strong>Success:</strong> Password Changed.'
+		messages.add_message(request, messages.SUCCESS, message)
+		return redirect('cemex:index')
 
 
 def index(request):
@@ -135,25 +146,27 @@ def edit(request):
 	if request.method == 'POST':
 		
 		# populate Profile Form with POST data and instance from authenticated user
-		profile_form 		=	UserProfileForm(request.POST, instance=request.user.profile)
+		profile_form = UserProfileForm(request.POST, instance=request.user.profile)
+		user_form = UserUpdateForm(request.POST, instance=request.user)
 
-		# if that form is valid
-		if profile_form.is_valid():
-
-			# save the form
+		# if forms valid
+		if profile_form.is_valid() and user_form.is_valid():
+			# save the forms
 			profile_form.save()
+			user_form.save()
 
 			# user feedback
 			message = '<strong>Success:</strong> Your profile was saved.'
 			messages.add_message(request, messages.SUCCESS, message)
 
-
 	# if no data submitted, populate profile form and return to the user.  
 	else:
 		profile_form	=	UserProfileForm(instance=request.user.profile)
+		user_form = UserUpdateForm(instance=request.user)
 	
 	# populate the dictionary
 	output['profile_form'] = profile_form
+	output['user_form'] = user_form
 
 	return render(request, 'profiles/edit.html', output)
 

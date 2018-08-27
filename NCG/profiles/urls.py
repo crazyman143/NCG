@@ -18,7 +18,8 @@ from . import views
 from .views import (PasswordChangeView,
                     PasswordResetView,
                     LoginView,
-                    LogoutView
+                    LogoutView,
+                    PasswordResetConfirmView
                     )
 
 
@@ -42,4 +43,8 @@ urlpatterns = [
     path('password_reset', PasswordResetView.as_view(), name='password_reset'),
      # user provided email for reset, is sent here by PasswordResetView
     path('password_reset_done', views.password_reset_done, name='password_reset_done'),
+     # link that is referenced in the password reset email
+    path('reset/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    # user is sent here by PasswordResetConfirmView after changing password:
+    path('password_reset_complete', views.password_reset_complete, name='password_reset_complete'),
 ]

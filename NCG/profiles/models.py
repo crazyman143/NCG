@@ -18,9 +18,6 @@ from .states import states_list
 
 class Profile(models.Model):
 	user		= models.OneToOneField(User, on_delete=models.CASCADE)
-	first_name	= models.CharField(max_length=30, blank=False)
-	last_name	= models.CharField(max_length=30, blank=False)
-	email		= models.CharField(max_length=30, blank=True)
 	phone		= models.CharField(max_length=30, blank=True)
 	address1	= models.CharField(max_length=30, blank=False)
 	address2	= models.CharField(max_length=30, blank=True)
