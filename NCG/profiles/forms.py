@@ -2,7 +2,7 @@
 
 from django import forms
 from django.forms import ModelForm
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 
 # import our Profile model
@@ -62,6 +62,17 @@ class UserRegistrationForm(UserCreationForm):
 										css_class='form-row'
 										),																		
 								)
+
+
+	# extend clean() method to ensure no duplicate username (with varying case)
+	# can be created:
+	def clean(self):
+		cleaned_data = super(UserCreationForm, self).clean()
+		username = cleaned_data.get('username')
+		if username and User.objects.filter(username__iexact=username).exists():
+			self.add_error('username', 'A user with that username already exists.')
+		return cleaned_data
+
 
 	# custom validation on verification field
 	def clean_verification(self):
