@@ -157,4 +157,5 @@ LOGIN_URL = 'profiles:login'
 
 INTERNAL_IPS = ('127.0.0.1', )
 
-
+# set to use custom authentication backend, which is case-agnostic authentication:
+AUTHENTICATION_BACKENDS = ('profiles.backends.CaseInsensitiveModelBackend', )
