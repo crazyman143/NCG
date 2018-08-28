@@ -304,6 +304,7 @@ def my_orders(request):
 	# pack output dict for sending to template:
 	output['orders'] = orders
 	output['ordercount'] = ordercount
+	output['shippinglabel'] = Shippinglabel(user=request.user)	# a shipping label to display
 
 	return render(request, 'cemex/my_orders.html', output )
 
