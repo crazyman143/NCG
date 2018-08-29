@@ -48,15 +48,16 @@ My Orders
 <div class="row">
 	<div class="col-md-8">
 	
-			{% if ordercount > 0 %}
+			{% if orders.count > 0 %}
 
 			<table class="table table-sm table-striped">
 
 			  <thead>
 			    <tr>
 			      <th scope="col">ID</th>
-			      <th scope="col">Placed</th>
-			      <th scope="col">More Details</th>
+			      <th scope="col">Date</th>
+			      <th scope="col">Items</th>
+			      <th scope="col">Details</th>
 			    </tr>
 			  </thead>
 
@@ -66,7 +67,10 @@ My Orders
 							{{order.id}}
 						</td>
 						<td>
-							{{order.datetime.date}} <span class="text-muted">{{order.datetime.time}}</span>
+							{{order.datetime.date | date:"m/d/Y"}} <span class="text-muted">{{order.datetime.time}}</span>
+						</td>
+						<td>
+							{{order.order_item_set.count}}
 						</td>
 						<td>
 							<p><a class="btn btn-secondary btn-sm role="button" href="{%url 'cemex:review_order' order.id %}"><i class="fas fa-search"></i></a></p>
@@ -91,9 +95,10 @@ My Orders
 		<div class="jumbotron">
 		<h4>Profile</h4>
 		<p>Your profile is included as shipping information on new orders.</p>
+		<p><strong>Please ensure it looks correct:</strong></p>
 		<hr />
 		<p>{{shippinglabel | safe}}
-		<p><a class="btn btn-primary float-left role="button" href="{%url 'cemex:new_order' %}">Edit</a></p>
+		<p><a class="btn btn-primary float-left role="button" href="{%url 'profiles:edit' %}">Edit</a></p>
 	</div>
 	</div>
 

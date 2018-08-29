@@ -299,11 +299,9 @@ def my_orders(request):
 
 	# Collect newest 25 completed user orders
 	orders = Order.objects.all().filter(user=request.user, complete = True).order_by('-datetime')[0:25]
-	ordercount = orders.count()
 
 	# pack output dict for sending to template:
 	output['orders'] = orders
-	output['ordercount'] = ordercount
 	output['shippinglabel'] = Shippinglabel(user=request.user)	# a shipping label to display
 
 	return render(request, 'cemex/my_orders.html', output )
@@ -324,9 +322,10 @@ def review_order(request, order_id):
 	
 	# list to store item itemizations
 	itemizations = []
+	totalqty = 0
 	
 	for order_item in order_items:
-	
+		totalqty += order_item.quantity
 		itemization = Itemization(item=order_item.item,
 								  quantity=order_item.quantity,
 								  order_item = order_item
@@ -340,11 +339,13 @@ def review_order(request, order_id):
 								     option=order_item_detail.option
 								     )
 
-			
 		itemizations.append(itemization)
+
+
 	
 	# pack output dict for sending to template:
 	output['itemizations'] = itemizations
 	output['order'] = order
+	output['totalqty'] = totalqty
 
 	return render(request, 'cemex/review_order.html', output )
