@@ -16,50 +16,93 @@ My Orders
 
 {% block body %}
 
-
 <div class="row">
 	<div class="col">
-		<h3>My Orders</h3>
+
+		<h3>
+			{% now "H" as hour %}
+
+			{% if hour >= "16" %}
+				<i style="color:teal"class="fas fa-moon"></i> Good Evening,
+			{% elif hour >= "12" %}
+				<i style="color:orange" class="fas fa-sun"></i> Good Afternoon,
+			{% elif hour >= "0" %}
+				<i style="color:tan" class="fas fa-coffee"></i> Good Morning,
+			{% endif %}
+			{{user.first_name}}.
+		</h3>
+		<p class=small>{% now "l, F j, o g:i A" %}</p>
+
+
+
+		<br /><br />
+		<h4>My Orders</h4>
 		<p>Your recent orders are listed below.</p>
 		<p><a class="btn btn-success float-left role="button" href="{%url 'cemex:new_order' %}"><i class="fas fa-plus-circle"></i> New Order</a></p>
 	</div>
 </div>
-</br>
-	{% if ordercount > 0 %}
 
-	<table class="table table-striped">
+<!-- empty spacer row -->
+<div class="row spacer-row"></div>
 
-	  <thead>
-	    <tr>
-	      <th scope="col">Order ID</th>
-	      <th scope="col">Placed On</th>
-	      <th scope="col" class="text-right">More Details</th>
-	    </tr>
-	  </thead>
+<div class="row">
+	<div class="col-md-8">
+	
+			{% if orders.count > 0 %}
 
-		{% for order in orders %}
-			 <tr>
-				<td>
-					{{order.id}}
-				</td>
-				<td>
-					<strong>{{order.datetime.date}}</strong>  {{order.datetime.time}}
-				</td>
-				<td>
-					<p><a class="btn btn-secondary btn-sm float-right role="button" href="{%url 'cemex:review_order' order.id %}"><i class="fas fa-search"></i></a></p>
-				</td>
-			 </tr>
-		{% endfor %}
-	</table>
+			<table class="table table-sm table-striped">
 
-	{% else %}
-		<div class="col text-center">
-			</br></br></br>
-			<p> You haven't placed any orders yet.</p>
-			<p>Place an order now: <a href="{%url 'cemex:new_order' %}">New Order</a>.</p>
-			</br></br></br>
-		</div>
-	{% endif %}
+			  <thead>
+			    <tr>
+			      <th scope="col">ID</th>
+			      <th scope="col">Date</th>
+			      <th scope="col">Items</th>
+			      <th scope="col">Details</th>
+			    </tr>
+			  </thead>
+
+				{% for order in orders %}
+					 <tr>
+						<td>
+							{{order.id}}
+						</td>
+						<td>
+							{{order.datetime.date | date:"m/d/Y"}} <span class="text-muted">{{order.datetime.time}}</span>
+						</td>
+						<td>
+							{{order.order_item_set.count}}
+						</td>
+						<td>
+							<p><a class="btn btn-secondary btn-sm role="button" href="{%url 'cemex:review_order' order.id %}"><i class="fas fa-search"></i></a></p>
+						</td>
+					 </tr>
+				{% endfor %}
+			</table>
+
+			{% else %}
+				<div class="col text-center">
+					</br></br></br>
+					<p> You haven't placed any orders yet.</p>
+					<p>Place an order now: <a href="{%url 'cemex:new_order' %}">New Order</a>.</p>
+					</br></br></br>
+				</div>
+			{% endif %}
+	</div>
+
+
+
+	<div class="col-lg-4">
+		<div class="jumbotron">
+		<h4>Profile</h4>
+		<p>Your profile is included as shipping information on new orders.</p>
+		<p><strong>Please ensure it looks correct:</strong></p>
+		<hr />
+		<p>{{shippinglabel | safe}}
+		<p><a class="btn btn-primary float-left role="button" href="{%url 'profiles:edit' %}">Edit</a></p>
+	</div>
+	</div>
+
+</div>
 
 
 <!-- empty spacer row -->

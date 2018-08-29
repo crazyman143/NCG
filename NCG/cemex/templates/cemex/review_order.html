@@ -21,7 +21,7 @@ Review Order
 <div class="row">
 	<div class="col">
 		<h3>Review Order</h3>
-		<p>The details if this order are listed below.</p>
+		<p>The details of this order are listed below.</p>
 	</div>
 </div>
 <hr />
@@ -30,16 +30,23 @@ Review Order
 	<div class="col"> 
 		<table cellpadding="5">
 			<tr>
-				<td>Placed:</td> 
-				<td>{{order.user.profile.first_name}} {{order.user.profile.last_name}}</td>
+				<td>Placed by:</td> 
+				<td>{{order.user.first_name}} {{order.user.last_name}}</td>
 			</tr>
 			<tr>
 				<td>Date:</td>
-				<td>{{order.datetime.date}}</td>
+				<td>
+					{{order.datetime.date | date:"m/d/Y"}}
+					{{order.datetime.time}}
+				</td>
 			</tr>
 			<tr>
-				<td>Time:</td>
-				<td>{{order.datetime.time}}</td>	
+				<td>Products:</td>
+				<td>{{order.order_item_set.count}}</td>	
+			</tr>
+			<tr>
+				<td>Total Quantity:</td>
+				<td>{{totalqty}}</td>	
 			</tr>
 		</table>
 	</div>
