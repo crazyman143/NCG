@@ -45,36 +45,38 @@ Confirm Order
 	<table class="table">
 		{% for itemization in itemizations %}
 			 <tr>
+			 		<td style="width:1%">
 						{% if itemization.item.image%}
-						<td style="width:1%">
 							<div class=" text-left">
 								<img src="/media/{{itemization.item.image}}" class="img-fluid img-thumbnail thumb-pic">
 							</div>
-						</td>
 						{% endif %}
+						</td>
 						<td>
-							<h6>{{itemization.item.name}}</h6>
+							<h5>{{itemization.item.name}}</h5>
 							<p>PID: {{itemization.item.number}} <br/>
-							Quantity: {{itemization.quantity}}</p>
-						</td>
+							Quantity: {{itemization.quantity}}
 
-
-				<td >
-					<p>
 						{% if itemization.properties.items %}
-							<h6>Options:</h6>
+							<p><strong>Options:</strong></p>
+							<table class="table-borderless">
 							{% for property, option in itemization.properties.items %}
-								{{property}}: {{option}} <br/>
+								<tr>
+									<td style="padding-left:0; padding-top:0">{{property}}:</td>
+									<td style="padding-top:0">{{option}}</td>
+								</tr>
 							{% endfor %}
+							</table>
 						{% endif %}
-					</p>
-				</td>
-				<td>
+						</td>
+				<td class="text-right">
 
 					<form>
 						{% csrf_token %}
 						{{itemization.del_form}}
-						<button type="submit" name="submit" class="btn btn-danger del_item_js_tag btn-sm"><i class="fas fa-trash"></i></button>
+						<button  title="Remove from order" type="submit" name="submit" class="btn btn-danger del_item_js_tag btn-sm">
+							<i class="fas fa-trash"></i>
+						</button>
 					</form>
 
 
