@@ -90,7 +90,7 @@ def new_order(request):
 						order_item_detail.save()
 
 				# count the order_items in the incomplete order. use this for the cart icon.
-				itemcount = Order_Item.objects.all().filter(order = incomplete_order).count()
+				itemcount = Order_Item.objects.filter(order = incomplete_order).count()
 				# return the item count back to the browser
 				return JsonResponse({'item_count' : itemcount})
 
@@ -104,7 +104,7 @@ def new_order(request):
 
 		
 	# count the order_items in the incomplete order. use this for the cart icon.
-	itemcount = Order_Item.objects.all().filter(order = incomplete_order).count()
+	itemcount = Order_Item.objects.filter(order = incomplete_order).count()
 
 	# all items
 	items = Item.objects.all().order_by('name')
@@ -190,7 +190,7 @@ def confirm_order(request):
 										
 
 	# get all items in order, count them.
-	order_items = Order_Item.objects.all().filter(order=incomplete_order)
+	order_items = Order_Item.objects.filter(order=incomplete_order)
 	itemcount = order_items.count()
 
 	# if the order has items:
@@ -206,7 +206,7 @@ def confirm_order(request):
 									  order_item = order_item
 									  )
 
-			order_item_details = Order_Item_Detail.objects.all().filter(order_item=order_item)
+			order_item_details = Order_Item_Detail.objects.filter(order_item=order_item)
 			
 			for order_item_detail in order_item_details:
 				
@@ -252,7 +252,7 @@ def place_order(request):
 
 
 	# get all items in incomplete order
-	order_items = Order_Item.objects.all().filter(order=incomplete_order)
+	order_items = Order_Item.objects.filter(order=incomplete_order)
 	
 	# list to store item itemizations
 	itemizations = []
@@ -263,7 +263,7 @@ def place_order(request):
 								  quantity=order_item.quantity,
 								  order_item = order_item
 								  )
-		order_item_details = Order_Item_Detail.objects.all().filter(order_item=order_item)
+		order_item_details = Order_Item_Detail.objects.filter(order_item=order_item)
 		
 		for order_item_detail in order_item_details:
 			
@@ -298,7 +298,7 @@ def my_orders(request):
 	output = {}
 
 	# Collect newest 25 completed user orders
-	orders = Order.objects.all().filter(user=request.user, complete = True).order_by('-datetime')[0:25]
+	orders = Order.objects.filter(user=request.user, complete = True).order_by('-datetime')[0:25]
 
 	# pack output dict for sending to template:
 	output['orders'] = orders
@@ -317,7 +317,7 @@ def review_order(request, order_id):
 	order = Order.objects.get(id=order_id, user=request.user)
 
 	# get all items in order
-	order_items = Order_Item.objects.all().filter(order=order)
+	order_items = Order_Item.objects.filter(order=order)
 
 	
 	# list to store item itemizations
@@ -331,7 +331,7 @@ def review_order(request, order_id):
 								  order_item = order_item
 								  )
 
-		order_item_details = Order_Item_Detail.objects.all().filter(order_item=order_item)
+		order_item_details = Order_Item_Detail.objects.filter(order_item=order_item)
 		
 		for order_item_detail in order_item_details:
 			
