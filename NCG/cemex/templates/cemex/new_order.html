@@ -31,11 +31,14 @@ Orders
 		
 				{% if form.image %}
 				<div class="text-center">
-				<p><img src="{{form.image}}" alt="image here" class="img-fluid img-thumbnail shrunk-pic"></p>
+				<p><img src="{{form.image}}" class="img-fluid img-thumbnail shrunk-pic"></p>
 				</div>
 				{% endif %}
 
 				<h5>{{form.name}}</h5>
+				{% if form.number %}
+				<span class="text-muted">PID: {{form.number}}</span>
+				{% endif %}
 				<p>{{form.desc}}</p>
 
 					

@@ -4,15 +4,20 @@ from django.contrib.auth.models import User 	# used in Order
 # Cemex Models:
 
 class Item(models.Model):
+	number = models.CharField(max_length=50, blank=True)
 	name = models.CharField(max_length=50, blank=False)
 	description	= models.CharField(max_length=500, blank=False)
 	image = models.FileField(upload_to='item_images/', blank=True)
 
 	def __str__(self):
-		return self.name
+		if self.number:
+			return self.number + ' ' + self.name
+		else:
+			return self.name
 		
+	# probably replace this with _set manager
 	def get_attributes(self):
-		attrib_set = Attribute.objects.all().filter(item=self)
+		attrib_set = Attribute.objects.filter(item=self)
 		return attrib_set
 
 	
@@ -30,7 +35,7 @@ class Attribute(models.Model):
 				)
 
 	def get_options(self):
-		opt_set = Option.objects.all().filter(attribute=self)
+		opt_set = Option.objects.filter(attribute=self)
 		return opt_set
 
 	

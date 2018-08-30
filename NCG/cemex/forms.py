@@ -23,6 +23,7 @@ class ItemOrderForm(forms.Form):
 			self.name = item.name
 			self.desc = item.description
 			self.id	  = item.id
+			self.number = item.number
 			if item.image:
 				self.image = item.image.url
 

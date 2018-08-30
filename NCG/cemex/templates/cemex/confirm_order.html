@@ -45,23 +45,29 @@ Confirm Order
 	<table class="table">
 		{% for itemization in itemizations %}
 			 <tr>
-				<td>
-					<div class="row">
 						{% if itemization.item.image%}
-						<div class=" text-left">
-							<img src="/media/{{itemization.item.image}}" class="img-fluid img-thumbnail thumb-pic">
-						</div>
+						<td style="width:1%">
+							<div class=" text-left">
+								<img src="/media/{{itemization.item.image}}" class="img-fluid img-thumbnail thumb-pic">
+							</div>
+						</td>
 						{% endif %}
-						<div class="col">
-							<h5><b>{{itemization.item.name}}</b></h5>
-							<h6><b>Quantity:</b> {{itemization.quantity}}</h6>
-						</div>
-					</div>
-				</td>
-				<td>
-					{% for property, option in itemization.properties.items %}
-						<h6><b>{{property}}:</b> {{option}}</h6>
-					{% endfor %}
+						<td>
+							<h6>{{itemization.item.name}}</h6>
+							<p>PID: {{itemization.item.number}} <br/>
+							Quantity: {{itemization.quantity}}</p>
+						</td>
+
+
+				<td >
+					<p>
+						{% if itemization.properties.items %}
+							<h6>Options:</h6>
+							{% for property, option in itemization.properties.items %}
+								{{property}}: {{option}} <br/>
+							{% endfor %}
+						{% endif %}
+					</p>
 				</td>
 				<td>
 
