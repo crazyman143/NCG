@@ -53,30 +53,43 @@ Review Order
 </div>
 
 <div class="row">
-	<div class="col">
-		<table class="table">
-			{% for itemization in itemizations %}
-				 <tr>
-					<td>
-						<div class="row">
-							<div class=" text-left">
-								<img src="/media/{{itemization.item.image}}" class="img-fluid img-thumbnail thumb-pic">
-							</div>
-							<div class="col">
-								<h5><b>{{itemization.item.name}}</b></h5>
-								<h6><b>Quantity:</b> {{itemization.quantity}}</h6>
-							</div>
+	<table class="table">
+		{% for itemization in itemizations %}
+			 <tr>
+			 	<td style="width:1%">
+					{% if itemization.item.image%}
+						<div class=" text-left">
+							<img src="/media/{{itemization.item.image}}" class="img-fluid img-thumbnail thumb-pic">
 						</div>
-					</td>
-					<td>
+					{% endif %}
+				</td>
+				<td>
+					<h5>{{itemization.item.name}}</h5>
+					<p>
+						PID: {{itemization.item.number}} <br/>
+						Quantity: {{itemization.quantity}}
+					</p>
+
+				{% if itemization.properties.items %}
+
+					<strong>Options:</strong>
+					<table class="table-borderless">
 						{% for property, option in itemization.properties.items %}
-							<h6><b>{{property}}:</b> {{option}}</h6>
+							<tr>
+								<td style="padding-left:0; padding-top:0; padding-bottom:0">{{property}}:</td>
+								<td style="padding-top:0; padding-bottom:0">{{option}}</td>
+							</tr>
 						{% endfor %}
-					</td>
-				 </tr>
-			{% endfor %}
-		</table>
-	</div>
+					</table>
+
+				{% endif %}
+
+				</td>
+			 </tr>
+
+		{% endfor %}
+
+	</table>
 </div>
 
 <hr />
