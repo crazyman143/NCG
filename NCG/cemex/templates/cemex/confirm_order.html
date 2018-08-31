@@ -29,8 +29,11 @@ Confirm Order
 
 <div class="row">
 	<div class="col">
-		<p>The following shipping information will be sent with your order:</p>
-		<p>{{shippinglabel | safe}}</p>
+		<div class="alert alert-secondary">
+			<h6>The following <strong>shipping information</strong> will be sent with your order:</h6>
+			<p>{{shippinglabel | safe}}</p>
+			<p><a class="btn btn-primary role="button" href="{%url 'profiles:edit' %}">Edit</a></p>
+		</div>
 		<h5>Items in your order:</h5>
 	</div>
 </div>
