@@ -29,12 +29,12 @@ class ItemOrderForm(forms.Form):
 
 		super(ItemOrderForm, self).__init__(*args, **kwargs)
 		
-		attrib_set = item.get_attributes()
+		attrib_set = item.attribute_set.all()
 		
 		for attrib in attrib_set:
 
 			finalopts = []
-			opt_set = attrib.get_options()
+			opt_set = attrib.option_set.all()
 
 			for opt in opt_set:
 				finalopts.append([str(opt.id),opt.name])

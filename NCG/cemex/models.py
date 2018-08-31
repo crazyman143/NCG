@@ -14,13 +14,8 @@ class Item(models.Model):
 			return self.number + ' ' + self.name
 		else:
 			return self.name
-		
-	# probably replace this with _set manager
-	def get_attributes(self):
-		attrib_set = Attribute.objects.filter(item=self)
-		return attrib_set
 
-	
+
 class Attribute(models.Model):
 	name = models.CharField(max_length=30, blank=False)
 	item = models.ForeignKey(Item, on_delete=models.CASCADE)
@@ -34,11 +29,7 @@ class Attribute(models.Model):
 				+ ')'
 				)
 
-	def get_options(self):
-		opt_set = Option.objects.filter(attribute=self)
-		return opt_set
 
-	
 class Option(models.Model):
 	name = models.CharField(max_length=30, blank=False)
 	attribute = models.ForeignKey(Attribute, on_delete=models.CASCADE)
