@@ -17,7 +17,6 @@ Confirm Order
 {% block body %}
 
 
-
 <!-- prefs heading row -->
 <div class="row">
 	<div class="col">
@@ -53,7 +52,9 @@ Confirm Order
 				<td>
 					<h5>{{itemization.item.name}}</h5>
 					<p>
-						PID: {{itemization.item.number}} <br/>
+						{% if itemization.item.number %}
+							PID: {{itemization.item.number}} <br/>
+						{% endif %}
 						Quantity: {{itemization.quantity}}
 					</p>
 
