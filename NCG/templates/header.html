@@ -16,7 +16,7 @@
 
 		<link rel='stylesheet' href=" {% static '/cemex/css/custom.css' %} " type='text/css'/>
 
-		<title>Cemex Portal {{ title }}</title>
+		<title>Cemex Portal {% block title %}{% endblock %}</title>
 	
 		{# block is filled when we extend this page #}
 		{% block head %}
