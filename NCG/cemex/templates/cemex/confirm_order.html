@@ -21,20 +21,19 @@ Confirm Order
 <!-- prefs heading row -->
 <div class="row">
 	<div class="col">
-		<h3>Cemex Order Confirmation</h3>
+		<h3>Order Confirmation</h3>
 		<p>Please confirm that everything in your order looks correct. </p>
 	</div>
 </div>
+
 <hr />
 
 <div class="row">
 	<div class="col">
 		<p>The following shipping information will be sent with your order:</p>
 		<p>{{shippinglabel | safe}}</p>
-		<p><h6>{{current_order.datetime}}</h6></p>
 		<h5>Items in your order:</h5>
 	</div>
-	
 </div>
 
 
@@ -45,44 +44,52 @@ Confirm Order
 	<table class="table">
 		{% for itemization in itemizations %}
 			 <tr>
-			 		<td style="width:1%">
-						{% if itemization.item.image%}
-							<div class=" text-left">
-								<img src="/media/{{itemization.item.image}}" class="img-fluid img-thumbnail thumb-pic">
-							</div>
-						{% endif %}
-						</td>
-						<td>
-							<h5>{{itemization.item.name}}</h5>
-							<p>PID: {{itemization.item.number}} <br/>
-							Quantity: {{itemization.quantity}}
+			 	<td style="width:1%">
+					{% if itemization.item.image%}
+						<div class=" text-left">
+							<img src="/media/{{itemization.item.image}}" class="img-fluid img-thumbnail thumb-pic">
+						</div>
+					{% endif %}
+				</td>
+				<td>
+					<h5>{{itemization.item.name}}</h5>
+					<p>
+						PID: {{itemization.item.number}} <br/>
+						Quantity: {{itemization.quantity}}
+					</p>
 
-						{% if itemization.properties.items %}
-							<p><strong>Options:</strong></p>
-							<table class="table-borderless">
-							{% for property, option in itemization.properties.items %}
-								<tr>
-									<td style="padding-left:0; padding-top:0">{{property}}:</td>
-									<td style="padding-top:0">{{option}}</td>
-								</tr>
-							{% endfor %}
-							</table>
-						{% endif %}
-						</td>
+				{% if itemization.properties.items %}
+
+					<strong>Options:</strong>
+					<table class="table-borderless">
+						{% for property, option in itemization.properties.items %}
+							<tr>
+								<td style="padding-left:0; padding-top:0; padding-bottom:0">{{property}}:</td>
+								<td style="padding-top:0; padding-bottom:0">{{option}}</td>
+							</tr>
+						{% endfor %}
+					</table>
+
+				{% endif %}
+
+				</td>
+
 				<td class="text-right">
-
 					<form>
 						{% csrf_token %}
 						{{itemization.del_form}}
-						<button  title="Remove from order" type="submit" name="submit" class="btn btn-danger del_item_js_tag btn-sm">
-							<i class="fas fa-trash"></i>
+						<button
+							title="Remove from order" 
+							type="submit" name="submit" 
+							class="btn btn-danger del_item_js_tag btn-sm">
+								<i class="fas fa-trash"></i>
 						</button>
 					</form>
-
-
 				</td>
 			 </tr>
+
 		{% endfor %}
+
 	</table>
 
 	<nav class="navbar fixed-bottom navbar-light bg-light justify-content-between">
@@ -101,7 +108,11 @@ Confirm Order
 		<div class="col text-center">
 			</br></br></br>
 			<p> You don't have any items in your order cart.</p>
-			<p><a class="btn btn-success role="button" href="{%url 'cemex:new_order' %}"><i class="fas fa-plus-circle"></i> New Order</a></p>
+			<p>
+				<a class="btn btn-success role="button" href="{%url 'cemex:new_order' %}">
+					<i class="fas fa-plus-circle"></i> New Order
+				</a>
+			</p>
 			</br></br></br>
 		</div>
 	{% endif %}
@@ -109,11 +120,6 @@ Confirm Order
 </div>
 
 <hr />
-
-
-
-
-
 
 <!-- empty spacer row -->
 <div class="row spacer-row"></div>
