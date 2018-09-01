@@ -94,21 +94,20 @@ Confirm Order
 		{% endfor %}
 
 	</table>
+</div>
 
-	<nav class="navbar fixed-bottom navbar-light bg-light justify-content-between">
-		<div class="col text-left marginfix">
-			<div>Add more items?</div>
-			<a class="btn btn-success float-left role="button" href="{%url 'cemex:new_order' %}">Go Back</a>
-		</div>
-		<div class="col text-right marginfix">
-			<div>Confirm and place order:</div>
-			<a class="btn btn-primary float-right role="button" href="{% url 'cemex:place_order' %}">Place Order</a>
-		</div>
-	</nav>
+<div class="row">
+	<div class="col text-right">
+		<a class="btn btn-success role="button" href="{%url 'cemex:new_order' %}">Go Back</a>
+
+		<a class="btn btn-primary role="button" href="{% url 'cemex:place_order' %}">Place Order</a>
+
+	</div>
+</div>
 
 
 	{% else %}
-		<div class="col text-center">
+		<div class="col col-md-2">
 			</br></br></br>
 			<p> You don't have any items in your order cart.</p>
 			<p>
@@ -120,9 +119,6 @@ Confirm Order
 		</div>
 	{% endif %}
 
-</div>
-
-<hr />
 
 <!-- empty spacer row -->
 <div class="row spacer-row"></div>
