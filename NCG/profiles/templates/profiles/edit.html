@@ -20,26 +20,22 @@ Edit Profile
 
 <!-- prefs heading row -->
 <div class="row">
-	<div class="col col-md-6 offset-md-3 text-left">
+	<div class="col  offset-md-3 col-md-6">
 		<h3>Edit Profile</h3>
 		<p>Edit your account profile here.</br>This information will be included with your orders as shipping information.</p>
 		<hr />
-
-
 		<form method="post" action="">
 			{% crispy user_form %}
 			{% crispy profile_form %}
 		</form>
 	</div>
+</div>
 
 
-
-
-	<div class="col col-md-6 offset-md-3 text-left">
-		<p>Change Password</p>
-		<p><a href="{% url 'profiles:change_password' %}">Click here to change your account password</a>.</p>
+<div class="row">
+	<div class="col  offset-md-3 col-md-6y">
+		<p><a href="{% url 'profiles:change_password' %}">Change Password</a></p>
 	</div>
-
 </div>
 
 <!-- empty spacer row -->
