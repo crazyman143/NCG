@@ -16,6 +16,9 @@ from cemex.forms import ItemOrderForm, ItemDeleteForm
 # utility classes/functions
 from .utilities import Itemization, Shippinglabel, Email
 
+# used for signing one-time order shipped links
+from django.core.signing import dumps, loads
+
 
 # Cemex Views:
 
@@ -44,7 +47,7 @@ def new_order(request):
 		incomplete_order = Order.objects.get(user = request.user, complete = False)
 	except:
 		# if that doesn't work, create one now
-		incomplete_order = Order(user = request.user, complete = False)
+		incomplete_order = Order(user = request.user, complete = False, shipped = False)
 		incomplete_order.save()
 
 	if (request.method == 'POST'):	
@@ -245,7 +248,7 @@ def place_order(request):
 
 	# try to get the user's incomplete order (cart)
 	try:		
-		incomplete_order = Order.objects.get(user = request.user, complete = False)
+		incomplete_order = Order.objects.get(user=request.user, complete=False)
 	# if that doesn't work, they shouldn't be here
 	except:
 		return redirect('cemex:new_order')
@@ -275,8 +278,14 @@ def place_order(request):
 		itemizations.append(itemization)
 
 	shippinglabel = Shippinglabel(user=request.user, type='html')
+	
+	linkhash = dumps(incomplete_order.id, salt='shiplinks')
 
-	email = Email1(itemizations=itemizations, order=incomplete_order, label=shippinglabel)
+	email = Email(itemizations=itemizations, 
+					order=incomplete_order, 
+					label=shippinglabel,
+					linkhash = linkhash
+					)
 	
 	incomplete_order.complete = True
 	incomplete_order.save()
@@ -349,3 +358,27 @@ def review_order(request, order_id):
 	output['totalqty'] = totalqty
 
 	return render(request, 'cemex/review_order.html', output )
+
+
+def ship_order(request, linkhash):
+
+	try:
+
+		# links are considered valid 6 weeks
+		order_id = loads(linkhash, salt='shiplinks', max_age=3628800)
+
+	except:
+		print ('Something wrong with the link')
+		return redirect('cemex:my_orders')
+
+	# get order
+	order = Order.objects.get(id=order_id)
+
+	# mark shipped
+	order.shipped = True
+	order.save()
+
+	print('order id ' + str(order_id) + ' shipped!')
+
+	# return render(request, 'cemex/review_order.html', output )
+	return redirect('cemex:my_orders')

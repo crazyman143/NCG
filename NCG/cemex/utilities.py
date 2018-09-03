@@ -13,6 +13,9 @@ from .forms import ItemDeleteForm
 # used to build shipping label based on profile
 from profiles.forms import UserProfileForm
 
+# used for signing one-time order shipped email
+from django.core.signing import dumps, loads
+
 # Utility Classes/Functions:
 
 class Itemization:
@@ -74,7 +77,7 @@ class Shippinglabel:
 class Email:
 	# Class for sending order details to the office in an email.
 
-	def __init__(self, itemizations,  order, label = ''):
+	def __init__(self, itemizations,  order, label, linkhash):
 		self.subject = 'You have a new CEMEX order'
 		
 		output = {
@@ -82,7 +85,8 @@ class Email:
 					'last_name': order.user.last_name,
 					'date': order.datetime.date,
 					'time' : order.datetime.time,
-					'itemizations' : itemizations
+					'itemizations' : itemizations,
+					'linkhash' : linkhash
 				}
 
 		template = get_template('cemex/html_email.html')

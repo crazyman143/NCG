@@ -61,5 +61,9 @@
 		{% endfor %}
 	</table>
 
+	<p>To mark this order as shipped, click the link below. The customer will be notified via email and their orders page updated.</p>
+
+	http://127.0.0.1:8000{% url 'cemex:ship_order' linkhash %}
+
 	</body>
 </html>

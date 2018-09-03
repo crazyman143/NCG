@@ -32,6 +32,6 @@ urlpatterns = [
     # links on my orders view takes user here. itemizated view of a submitted order.
     path('review_order/<order_id>/', views.review_order, name='review_order'),
     # accepts an order uuid and marks the order shipped/processed for user's knowledge (INCOMPLETE)
-    #path('process_order/<order_uuid>/', views.process_order, name='review_order'),
+    path('ship_order/<linkhash>/', views.ship_order, name='ship_order'),
 	
 ]

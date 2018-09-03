@@ -56,23 +56,31 @@ My Orders
 			    <tr>
 			      <th scope="col">ID</th>
 			      <th scope="col">Date</th>
-			      <th scope="col">Items</th>
-			      <th scope="col">Details</th>
+			      <th class="text-center" scope="col">Shipped</th>
+			      <th class="text-center" scope="col">Details</th>
 			    </tr>
 			  </thead>
 
 				{% for order in orders %}
-					 <tr>
+					{% if order.shipped %}
+						<tr>
+					{% else %}
+						<tr>
+					{% endif %}
 						<td>
 							{{order.id}}
 						</td>
 						<td>
 							{{order.datetime.date | date:"m/d/Y"}} <span class="text-muted">{{order.datetime.time}}</span>
 						</td>
-						<td>
-							{{order.order_item_set.count}}
-						</td>
-						<td>
+						<td class="text-center">
+							{% if order.shipped %}
+							<i class="far fa-check-circle" style="color:green"></i>
+							{% else %}
+							Processing
+							{% endif %}
+						</td>						
+						<td class="text-center">
 							<p><a class="btn btn-secondary btn-sm role="button" href="{%url 'cemex:review_order' order.id %}"><i class="fas fa-search"></i></a></p>
 						</td>
 					 </tr>
