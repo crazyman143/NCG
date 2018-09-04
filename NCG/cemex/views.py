@@ -363,22 +363,17 @@ def review_order(request, order_id):
 def ship_order(request, linkhash):
 
 	try:
-
 		# links are considered valid 6 weeks
 		order_id = loads(linkhash, salt='shiplinks', max_age=3628800)
 
+		# get order
+		order = Order.objects.get(id=order_id)
+
+		# mark shipped
+		order.shipped = True
+		order.save()
+		result = True
 	except:
-		print ('Something wrong with the link')
-		return redirect('cemex:my_orders')
+		result = False
 
-	# get order
-	order = Order.objects.get(id=order_id)
-
-	# mark shipped
-	order.shipped = True
-	order.save()
-
-	print('order id ' + str(order_id) + ' shipped!')
-
-	# return render(request, 'cemex/review_order.html', output )
-	return redirect('cemex:my_orders')
+	return render(request, 'cemex/ship_order.html', {'result':result} )

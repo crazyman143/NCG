@@ -83,7 +83,13 @@ My Orders
 							 	<strong>Shipped</strong>
 							 </span>
 							{% else %}
-							Processing
+							<span data-toggle="tooltip" 
+											data-placement="right"
+											data-delay-show="500"
+							 				title="This order is currently being processed by our staff." 
+							 				>
+							 	Processing
+							 </span>
 							{% endif %}
 						</td>						
 						<td class="text-center">
