@@ -56,7 +56,7 @@ My Orders
 			    <tr>
 			      <th scope="col">ID</th>
 			      <th scope="col">Date</th>
-			      <th class="text-center" scope="col">Status</th>
+			      <th class="text-center" scope="col">Shipped</th>
 			      <th class="text-center" scope="col">Details</th>
 			    </tr>
 			  </thead>
@@ -75,13 +75,7 @@ My Orders
 						</td>
 						<td class="text-center">
 							{% if order.shipped %}
-							<span data-toggle="tooltip" 
-											data-placement="right"
-											data-delay-show="500"
-							 				title="This order has been shipped. It should arrive soon!" 
-							 				style="color:green">
-							 	<strong>Shipped</strong>
-							 </span>
+							<i class="far fa-check-circle" style="color:green"></i>
 							{% else %}
 							Processing
 							{% endif %}
