@@ -64,7 +64,9 @@ def password_change_done(request):
 
 
 class PasswordResetView(PasswordResetView):
+	# need to fix: need non-html template here
 	email_template_name = 'profiles/password_reset_email.html'
+	html_email_template_name = 'profiles/password_reset_email.html'
 	subject_template_name = 'profiles/password_reset_subject.txt'
 	template_name = 'profiles/password_reset_form.html'
 	success_url = reverse_lazy('profiles:password_reset_done')
