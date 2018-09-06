@@ -39,7 +39,7 @@ New Order
 				{% if form.number %}
 				<span class="text-muted">PID: {{form.number}}</span>
 				{% endif %}
-				<p>{{form.desc}}</p>
+				{{ form.desc | linebreaks }}
 
 					
 						<form action='' method='POST'>
