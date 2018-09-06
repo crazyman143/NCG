@@ -6,7 +6,7 @@ from django.contrib.auth.models import User 	# used in Order
 class Item(models.Model):
 	number = models.CharField(max_length=50, blank=True)
 	name = models.CharField(max_length=50, blank=False)
-	description	= models.CharField(max_length=500, blank=False)
+	description	= models.TextField(blank=False)
 	image = models.FileField(upload_to='item_images/', blank=True)
 
 	def __str__(self):
