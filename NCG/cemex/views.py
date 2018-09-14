@@ -259,7 +259,7 @@ def place_order(request):
 	itemizations = []
 	
 	# for all items for the incomplete order
-	for order_item in  incomplete_order.order_item_set.all()
+	for order_item in  incomplete_order.order_item_set.all():
 	
 		# build itemization
 		itemization = Itemization(item=order_item.item,
@@ -268,7 +268,7 @@ def place_order(request):
 								  )
 
 		# for all item details in this item
-		for order_item_detail in order_item_details = order_item.order_item_detail_set.all():
+		for order_item_detail in order_item.order_item_detail_set.all():
 			
 			# add itemization property
 			itemization.add_property(attribute=order_item_detail.attribute,

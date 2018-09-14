@@ -52,9 +52,20 @@ Review Order
 			<tr>
 				<td><strong>Status:</strong></td>
 				<td>{% if order.shipped %}
-					Shipped
+					<span data-toggle="tooltip" 
+									data-placement="right"
+									data-delay-show="500"
+					 				title="This order has been shipped. It should arrive soon!" 
+					 				style="color:green">
+					 	<strong>Shipped</strong>
+					 </span>
 					{% else%}
-					Processing
+						<span data-toggle="tooltip" 
+										data-placement="right"
+										data-delay-show="500"
+						 				title="This order is being processed by our staff.">
+						 	Processing
+						 </span>
 					{% endif %}</td>	
 			</tr>
 			<tr>
