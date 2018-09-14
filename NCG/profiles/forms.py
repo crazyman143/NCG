@@ -18,7 +18,7 @@ from NCG.settings import USER_REG_CODE
 
 # extend the user creation form to include addtl fields and crispyforms:
 class UserRegistrationForm(UserCreationForm):
-	username = forms.CharField(help_text='Case sensitive!', label='Username')
+	username = forms.CharField(label='Username')
 
 	password1 = forms.CharField(help_text='Minimum 8 characters',
 								label='Password',
