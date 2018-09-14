@@ -73,6 +73,24 @@ class Order_Item(models.Model):
 				)
 	
 
+class Order_Address(models.Model):
+	order = models.ForeignKey(Order, on_delete=models.CASCADE)
+	first_name = models.CharField(max_length=30, blank=False)
+	last_name = models.CharField(max_length=30, blank=False)
+	email = models.CharField(max_length=30, blank=True)
+	address1 = models.CharField(max_length=30, blank=False)
+	address2 = models.CharField(max_length=30, blank=True)
+	city = models.CharField(max_length=30, blank=False)
+	state = models.CharField(max_length=30, blank=False)
+	zip = models.CharField(max_length=30, blank=False)
+	phone = models.CharField(max_length=30, blank=True)
+
+	def __str__(self):
+		return ('for order: ' 
+				+ str(self.order.id) 
+				)
+
+
 class Order_Item_Detail(models.Model):
 	attribute = models.ForeignKey(Attribute, on_delete=models.CASCADE)
 	option = models.ForeignKey(Option, on_delete=models.CASCADE)

@@ -30,26 +30,44 @@ Review Order
 	<div class="col"> 
 		<table cellpadding="5">
 			<tr>
-				<td>Placed by:</td> 
+				<td><strong>Placed By:</strong></td> 
 				<td>{{order.user.first_name}} {{order.user.last_name}}</td>
-			</tr>
+			</tr>			
 			<tr>
-				<td>Date:</td>
+				<td valign="top"><strong>Address:</strong></td>
+				<td>{{shippinglabel | safe}}</td>
+			</tr>
+		</table>
+	</div>
+
+	<div class="col"> 
+		<table cellpadding="5">
+			<tr>
+				<td><strong>Date:</strong></td>
 				<td>
 					{{order.datetime.date | date:"m/d/Y"}}
 					{{order.datetime.time}}
 				</td>
 			</tr>
 			<tr>
-				<td>Products:</td>
-				<td>{{order.order_item_set.count}}</td>	
+				<td><strong>Status:</strong></td>
+				<td>{% if order.shipped %}
+					Shipped
+					{% else%}
+					Processing
+					{% endif %}</td>	
 			</tr>
 			<tr>
-				<td>Total Quantity:</td>
+				<td><strong>Products:</strong></td>
+				<td>{{order.order_item_set.count}}</td>	
+			</tr>			
+			<tr>
+				<td><strong>Total Quantity:</strong></td>
 				<td>{{totalqty}}</td>	
 			</tr>
 		</table>
 	</div>
+
 </div>
 
 <div class="row">

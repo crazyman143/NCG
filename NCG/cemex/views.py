@@ -10,7 +10,7 @@ from django.http import JsonResponse
 from django.contrib import messages
 
 # models for order handling
-from cemex.models import Item, Attribute, Option, Order, Order_Item, Order_Item_Detail
+from cemex.models import Item, Attribute, Option, Order, Order_Item, Order_Item_Detail, Order_Address
 # forms
 from cemex.forms import ItemOrderForm, ItemDeleteForm
 # utility classes/functions
@@ -240,11 +240,13 @@ def place_order(request):
 	output = {}
 
 	# the user has 'placed' the order.
-	# we need to set the order complete status to True,
-	# generate the itemizations again so we can email them,
-	# and send the email. 
-	# we need to let the user know its processing, then
-	# return them to their orders page.
+	# we need to:
+	#	set the order complete status to True,
+	#	generate itemizations again so we can email them
+	#	copy profile address to Order_Address 
+	#	send the email. 
+	#	let the user know its processing
+	# 	return them to their orders page.
 
 	# try to get the user's incomplete order (cart)
 	try:		
@@ -252,35 +254,36 @@ def place_order(request):
 	# if that doesn't work, they shouldn't be here
 	except:
 		return redirect('cemex:new_order')
-
-
-	# get all items in incomplete order
-	order_items = Order_Item.objects.filter(order=incomplete_order)
 	
 	# list to store item itemizations
 	itemizations = []
 	
-	for order_item in order_items:
+	# for all items for the incomplete order
+	for order_item in  incomplete_order.order_item_set.all()
 	
+		# build itemization
 		itemization = Itemization(item=order_item.item,
 								  quantity=order_item.quantity,
 								  order_item = order_item
 								  )
-		order_item_details = Order_Item_Detail.objects.filter(order_item=order_item)
-		
-		for order_item_detail in order_item_details:
+
+		# for all item details in this item
+		for order_item_detail in order_item_details = order_item.order_item_detail_set.all():
 			
+			# add itemization property
 			itemization.add_property(attribute=order_item_detail.attribute,
 									 option=order_item_detail.option
 									 )
-
 			
 		itemizations.append(itemization)
 
-	shippinglabel = Shippinglabel(user=request.user, type='html')
-	
+	# shipping label goes in the email and recorded in db
+	shippinglabel = Shippinglabel(user=request.user)
+
+	# used in the email for mark as shipped link
 	linkhash = dumps(incomplete_order.id, salt='shiplinks')
 
+	# build the email
 	email = Email(itemizations=itemizations, 
 					order=incomplete_order, 
 					label=shippinglabel,
@@ -289,6 +292,20 @@ def place_order(request):
 	
 	incomplete_order.complete = True
 	incomplete_order.save()
+
+	# copy profile address to order address record
+	order_address = Order_Address(order=incomplete_order)
+	order_address.first_name = request.user.first_name
+	order_address.last_name = request.user.last_name
+	order_address.email = request.user.email
+	order_address.address1 = request.user.profile.address1
+	order_address.address2 = request.user.profile.address2
+	order_address.city = request.user.profile.city
+	order_address.state = request.user.profile.state
+	order_address.zip = request.user.profile.zip
+	order_address.phone = request.user.profile.phone
+	order_address.save()
+
 	email.send()
 	
 	message = ('<strong>Success:</strong> Your order with id ' 
@@ -356,6 +373,7 @@ def review_order(request, order_id):
 	output['itemizations'] = itemizations
 	output['order'] = order
 	output['totalqty'] = totalqty
+	output['shippinglabel'] = Shippinglabel(order=order)
 
 	return render(request, 'cemex/review_order.html', output )
 

@@ -16,6 +16,9 @@ from profiles.forms import UserProfileForm
 # used for signing one-time order shipped email
 from django.core.signing import dumps, loads
 
+# used for generating shipping labels from user or order
+from cemex.models import Order_Address
+
 # Utility Classes/Functions:
 
 class Itemization:
@@ -49,26 +52,42 @@ class Itemization:
 
 
 class Shippinglabel:
-	# Used in order confirmation view. 
+	# Used in order confirmation and review order views.
 	# displays paragraph of shipping info
 
-	def __init__(self, user=False, type='html'):
+	def __init__(self, **kwargs):
 		
-		if type == 'text':
-			linebreak = '\n'
-		else:
-			linebreak = '<br />'
-		
-		self.label = user.first_name + ' ' + user.last_name + linebreak
-		self.label += user.profile.address1 + linebreak
-		self.label += user.profile.address2 + linebreak
-		self.label += user.profile.city + linebreak
-		self.label += user.profile.state + linebreak
-		self.label += user.profile.zip + linebreak
-		self.label += user.profile.phone + linebreak
-		self.label += user.email + linebreak
-		# fix any duplicate line breaks
-		self.label = self.label.replace(linebreak + linebreak, linebreak)
+		linebreak = '<br />'
+
+		if 'user' in kwargs:
+
+			user = kwargs['user']
+			
+			self.label = user.first_name + ' ' + user.last_name + linebreak
+			self.label += user.profile.address1 + linebreak
+			self.label += user.profile.address2 + linebreak
+			self.label += user.profile.city + linebreak
+			self.label += user.profile.state + linebreak
+			self.label += user.profile.zip + linebreak
+			self.label += user.profile.phone + linebreak
+			self.label += user.email + linebreak
+			# fix any duplicate line breaks
+			self.label = self.label.replace(linebreak + linebreak, linebreak)
+
+		elif 'order' in kwargs:
+
+			order = Order_Address.objects.get(order=kwargs['order'])
+
+			self.label = order.first_name + ' ' + order.last_name + linebreak
+			self.label += order.address1 + linebreak
+			self.label += order.address2 + linebreak
+			self.label += order.city + linebreak
+			self.label += order.state + linebreak
+			self.label += order.zip + linebreak
+			self.label += order.phone + linebreak
+			self.label += order.email + linebreak
+			# fix any duplicate line breaks
+			self.label = self.label.replace(linebreak + linebreak, linebreak)
 		
 	def __str__(self):
 		return self.label
