@@ -277,23 +277,7 @@ def place_order(request):
 			
 		itemizations.append(itemization)
 
-	# shipping label goes in the email and recorded in db
-	shippinglabel = Shippinglabel(user=request.user)
-
-	# used in the email for mark as shipped link
-	linkhash = dumps(incomplete_order.id, salt='shiplinks')
-
-	# build the email
-	email = Email(itemizations=itemizations, 
-					order=incomplete_order, 
-					label=shippinglabel,
-					linkhash = linkhash
-					)
-	
-	incomplete_order.complete = True
-	incomplete_order.save()
-
-	# copy profile address to order address record
+	# copy profile address to order address record for this order
 	order_address = Order_Address(order=incomplete_order)
 	order_address.first_name = request.user.first_name
 	order_address.last_name = request.user.last_name
@@ -306,6 +290,22 @@ def place_order(request):
 	order_address.phone = request.user.profile.phone
 	order_address.save()
 
+	# shipping label goes in the email and recorded in db
+	shippinglabel = Shippinglabel(order=incomplete_order)
+
+	# used in the email for mark as shipped link
+	linkhash = dumps(incomplete_order.id, salt='shiplinks')
+
+	# build the email
+	email = Email(itemizations=itemizations, 
+					order=incomplete_order, 
+					label=shippinglabel,
+					linkhash = linkhash,
+					shippinglabel = shippinglabel
+					)
+	
+	incomplete_order.complete = True
+	incomplete_order.save()
 	email.send()
 	
 	message = ('<strong>Success:</strong> Your order with id ' 

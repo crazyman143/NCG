@@ -96,14 +96,16 @@ class Shippinglabel:
 class Email:
 	# Class for sending order details to the office in an email.
 
-	def __init__(self, itemizations,  order, label, linkhash):
+	def __init__(self, itemizations,  order, label, linkhash, shippinglabel = False):
 		self.subject = 'You have a new CEMEX order'
 		
 		output = {
+					'id' : order.pk,
 					'first_name' : order.user.first_name,
 					'last_name': order.user.last_name,
 					'date': order.datetime.date,
 					'time' : order.datetime.time,
+					'shippinglabel' : shippinglabel,
 					'itemizations' : itemizations,
 					'linkhash' : linkhash
 				}

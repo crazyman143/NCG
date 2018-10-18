@@ -1,6 +1,22 @@
 
 <html>
 	<head>
+
+		<style>
+			td
+			{
+			    border: 1px dotted gray;
+			    padding: 5px;
+			}
+
+			table
+			{
+			  border: 1px solid black;
+			  border-collapse:collapse;
+			  width: 60%;
+			}
+	</style>
+
 	</head>
 
 	<body>
@@ -13,53 +29,67 @@
 
 
 
-		<table cellpadding="10">
+		<table>
 			<tr>
-				<td><b>Placed:</b></td> 
-				<td>{{first_name}} {{last_name}}</td>
+				<td style="width:20%"><b>Order ID</b></td> 
+				<td colspan="2">{{id}}</td>
 			</tr>
 			<tr>
-				<td><b>Date:</b></td>
-				<td>{{date}}</td>
+				<td style="width:20%"><b>Order Date</b></td> 
+				<td colspan="2">{{date}}</td>
 			</tr>
+			<tr></tr>
 			<tr>
-				<td><b>Time:</b></td>
-				<td>{{time}}</td>	
+				<td style="width:20%"><b>Cust Name</b></td> 
+				<td colspan="2">{{first_name}} {{last_name}}</td>
 			</tr>
-		</table>
 
+			<tr>
+				<td style="width:20%"><b>Shipping Address</b></td> 
+				<td colspan="2">{{shippinglabel | safe}}</td>
+			</tr>
 
-	<table cellpadding="10">
-		{% for itemization in itemizations %}
+			<tr></tr>
+
 			 <tr>
 				<td>
-					<b>{{itemization.item.name}}</b>
+					<b>PID</b>
+				</td>
+				<td>
+					<b>NAME</b>
+				</td>
+				<td style="width:10%">
+					<b>QTY</b>
 				</td>
 			</tr>
 
-			{% for property, option in itemization.properties.items %}
-
-			<tr>
-				<td>{{property}}:</td>
-				<td>{{option}}</td>
-			</tr>
-			
-			{% endfor %}
-
-			<tr>
+		{% for itemization in itemizations %}
+			 <tr>
 				<td>
-					Quantity:
+					{{itemization.item.number}}
+				</td>
+				<td>
+					{{itemization.item.name}}
 				</td>
 				<td>
 					{{itemization.quantity}}
 				</td>
 			</tr>
 
+			{% for property, option in itemization.properties.items %}
 
-			<tr><td colspan="2"><hr /></td></tr>
+			<tr>
+				<td></td>
+				<td>{{property}}: {{option}}</td>
+				<td></td>
+			</tr>
+			
+			{% endfor %}
+			<tr></tr>
 
 		{% endfor %}
-	</table>
+
+		</table>
 
 	<p>To mark this order as shipped, click the link below. The customer will be notified via email and their orders page updated.</p>
 
